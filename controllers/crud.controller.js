@@ -70,10 +70,9 @@ const Findsingle = async(req,res)=>{
 
     try {
  
-        const data = await crud.findOneAndUpdate(
-            {_id: req.params.id},//search the old  data
-            req.body, //make the new data in body
-            {new : true} // update is true
+        const data = await crud.findOne(
+            {_id: req.params.id} //search the old  data
+           
         )
         
         res.status(201).json( data);
@@ -90,19 +89,23 @@ const Findsingle = async(req,res)=>{
 const Update = async(req,res)=>{
     
     const { errors, isValid } = Validate(req.body);
-
-    try {
+    try{ 
         if (!isValid) {
             res.status(404).json(errors);
         } else {
-        const data = await crud.findOne({_id:req.params.id})
-        
-        res.status(201).json( data);
-        }
-        } catch (error) {
-        console.log(error.message);
-        res.status(400).json({ message: 'Failed to add user', error: error.message });
-    }
+    const data = await crud.findOneAndUpdate(
+        {_id: req.params.id},//search the old  data
+        req.body, //make the new data in body
+        {new : true} // update is true
+    )
+    
+    res.status(201).json( data);
+}
+
+    } catch (error) {
+    console.log(error.message);
+    res.status(400).json({ message: 'Failed to add user', error: error.message });
+}
 }
 
 
